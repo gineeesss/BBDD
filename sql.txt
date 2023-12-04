@@ -1,0 +1,15 @@
+--MYSQL--  
+
+*abrir terminal --> acceder a mysql mediante terminal  
+	->mysql -u alumno -p
+
+
+
+CREATE DATABASE Startrek CHARACTER SET Latinl COLLATE latinl_spanish_ci;
+
+
+---------------------------
+show databases;
+
+drop database basededatos;
+
