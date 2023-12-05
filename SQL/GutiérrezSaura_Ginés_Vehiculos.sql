@@ -53,3 +53,4 @@ DESCRIBE propietarios;
 # mostrar creacion y esquema de tabla propietariosAutomoviles	
 SHOW CREATE TABLE propietariosAutomoviles;
 DESCRIBE propietariosAutomoviles;
+
