@@ -54,44 +54,6 @@ DESCRIBE propietarios;
 SHOW CREATE TABLE propietariosAutomoviles;
 DESCRIBE propietariosAutomoviles;
 
-# ejercicio1 Añadir en la tabla AUTOMÓVILES un atributo que irá delante del campo Consumo. Se llamará Tipo, será obligatorio y sólo podrá tomar los siguientes valores: utilitario, monovolumen, todoterreno y familiar
-ALTER TABLE automoviles
-ADD COLUMN Tipo VARCHAR(15) NOT NULL
-CHECK (Tipo IN ('utilitario', 'monovolumen', 'todoterreno', 'familiar'))
-AFTER id;
-
-
-# ejercicio2 Cambiar el tipo del campo Emisiones a real con dos dígitos en la partedecimal y dos en la parte entera
-
-ALTER TABLE automoviles
-MODIFY COLUMN emisiones DECIMAL(4,2) NOT NULL;
-
-
-# ejercicio3 Comprobar que se han hecho las modificaciones anteriores en la tabla AUTOMÓVILES
-
-DESCRIBE automoviles;
-
-# ejercicio4 El atributo FechaNacimiento de la tabla PROPIETARIOS se pasará a llamar nacimiento
-ALTER TABLE propietarios
-CHANGE COLUMN fechaNacimiento nacimiento DATE NOT NULL;
-
-
-# ejercicio5 Comprobar que se ha efectuado el cambio
-
-DESCRIBE propietarios;
-
-# ejercicio6 Borrar el atributo Imagen de la tabla AUTOMÓVILES
-ALTER TABLE automoviles
-DROP COLUMN imagen;
-
-
-# ejercicio7 Comprobar que se ha borrado
-DESCRIBE automoviles;
-
-
-# ejercicio8 Cambiar el nombre de la tabla PROPIETARIOS por CLIENTES
-RENAME TABLE propietarios TO clientes;
-
 
 
 
