@@ -124,7 +124,7 @@ CREATE TABLE VACUNACIONES (
 
     fechaVacunacion DATE,
 
-    descripcionVacuna VARCHAR(255),
+    descripcionVacuna VARCHAR(25),
 
     CONSTRAINT PK_VACUNACIONES PRIMARY KEY (nombre, fechaVacunacion),
 
@@ -143,7 +143,7 @@ ALTER table VACUNACIONES
 DROP CONSTRAINT FK_ANIMALES;
 
 
-
+##para eliminar la clave primaria de una tabla, primero tengo que eliminar la relacion que tenga el atributo con otras tablas
 
 
 # ejercicio14. Quitar la restricción de clave primaria en la tabla ANIMALES.
@@ -171,6 +171,8 @@ ALTER TABLE ANIMALES CHANGE COLUMN nom_animal Nombre VARCHAR(25) NOT NULL;
 
 
 ALTER TABLE ANIMALES ADD CONSTRAINT PK_ANIMALES PRIMARY KEY (Nombre);
+#el de arriba meh, mejor el de abajo
+ALTER TABLE ANIMALES ADD PRIMARY KEY(Nombre);
 
 DESCRIBE ANIMALES;
 
