@@ -17,7 +17,11 @@ CREATE TABLE TRABAJOS(
 );
 
 CREATE TABLE UNIVERSIDADES(
+<<<<<<< HEAD
+	univ_cod VARCHAR(5) PRIMARY KEY,
+=======
 	univ_od VARCHAR(5),
+>>>>>>> 1554869dc70ff6ef9bae30a5f658cb084d1e999d
 	nombre_univ VARCHAR(25),
 	ciudad VARCHAR(20),
 	cod_postal VARCHAR(5)
@@ -43,3 +47,22 @@ CREATE TABLE ESTUDIOS(
 	FOREIGN KEY(dni_emple) REFERENCES EMPLEADOS(dni) ON DELETE CASCADE,
 	FOREIGN KEY(universidad) REFERENCES UNIVERSIDADES(univ_cod) ON DELETE CASCADE
 );
+<<<<<<< HEAD
+
+CREATE TABLE TRABAJOS(
+	codigo VARCHAR(5) PRIMARY KEY,
+	nombre VARCHAR(20) UNIQUE,
+	salario DECIMAL(6,2) CHECK (salario <=5000) NOT NULL
+);
+
+CREATE TABLE HISTORIAL_LABORAL(
+	Dni_emple VARCHAR(10),
+	Trabajo_cod VARCHAR(5),
+	fecha_inicio DATE NOT NULL,
+	fecha_fin DATE,
+	PRIMARY KEY(Dni_emple, Trabajo_cod, fecha_inicio),
+	FOREIGN KEY (dni_emple) REFERENCES EMPLEADOS(dni) ON DELETE CASCADE,
+	FOREIGN KEY (Trabajo_cod) REFERENCES TRABAJOS(codigo)
+);
+=======
+>>>>>>> 1554869dc70ff6ef9bae30a5f658cb084d1e999d
