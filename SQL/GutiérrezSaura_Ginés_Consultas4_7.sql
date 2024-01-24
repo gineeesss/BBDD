@@ -63,32 +63,46 @@ GROUP BY CodigoEmpleadoRepVentas;
 
 -- 11. Sacar el número de clientes que no tiene asignado representante de ventas.
 
-
+SELECT COUNT(*) AS "Clientes sin Rep. Ventas"
+FROM Clientes
+WHERE CodigoEmpleadoRepVentas IS NULL;
 
 -- 12. Sacar cuál fue el primer y último pago que hizo algún cliente.
 
-
+SELECT MAX(FechaPago) AS "Último Pago", MIN(FechaPago) AS "Primer Pago"
+FROM Pagos;
 
 -- 13. Sacar el código de cliente de aquellos clientes que hicieron pagos en 2008.
 
-
-
+SELECT  CodigoCliente, FechaPago
+FROM Pagos
+WHERE YEAR(FechaPago)=2008;
 
 -- 14. Sacar los distintos estados por los que puede pasar un pedido.
 
+SELECT DISTINCT Estado AS "Estados de los pedidos"
+FROM Pedidos;
 
 
 -- 15. Sacar el número de pedido, código de cliente, fecha requerida y fecha de entrega de los pedidos que no han sido entregados a tiempo.
 
-
+SELECT CodigoPedido, CodigoCliente, FechaEsperada, FechaEntrega
+FROM Pedidos
+WHERE (FechaEntrega <= FechaEsperada);
 
 -- 16. Sacar cuántos productos existen en cada línea de pedido.
 
-
+SELECT Gama, COUNT(*)
+FROM Productos
+GROUP BY Gama;
 
 -- 17. Sacar un listado de los 20 códigos de productos más pedidos ordenado por cantidad pedida. (pista: Usar el filtro LIMIT de MySQL o el filtro rownum de Oracle.
 
-
+SELECT CodigoProducto
+FROM DetallePedidos
+GROUP BY CodigoProducto
+ORDER BY COUNT(*) DESC
+LIMIT 20;
 
 -- 18. Sacar el número de pedido, código de cliente, fecha requerida y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la
 -- fecha requerida. (pista: Usar la función addDate de MySQL o el operador + de Oracle).
