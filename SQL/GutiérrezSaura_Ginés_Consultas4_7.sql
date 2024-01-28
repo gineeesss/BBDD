@@ -107,11 +107,20 @@ LIMIT 20;
 -- 18. Sacar el número de pedido, código de cliente, fecha requerida y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la
 -- fecha requerida. (pista: Usar la función addDate de MySQL o el operador + de Oracle).
 
-
+SELECT CodigoPedido, CodigoCliente, FechaEsperada, FechaEntrega
+FROM Pedidos
+WHERE FechaEntrega < DATE_SUB(FechaEsperada, INTERVAL 2 DAY);
 
 --  19. Sacar la facturación que ha tenido la empresa en toda la historia, indicando la base imponible, el IVA y el total facturado. NOTA: La base imponible 
 -- se calcula sumando el coste del producto por el número de unidades vendidas. El IVA, es el 18 % de la base imponible, y el total, la suma de los dos campos anteriores.
 
-
+SELECT SUM(Cantidad * PrecioUnidad) AS "Base Imponible", SUM(Cantidad * PrecioUnidad * 0.18) AS IVA, SUM(Cantidad * PrecioUnidad) +SUM(Cantidad * PrecioUnidad * 0.18) AS TOTAL
+FROM DetallePedidos; 
 
 -- 20. Sacar la misma información que en la pregunta anterior, pero agrupada por código de producto filtrada por los códigos que empiecen por FR
+
+SELECT CodigoProducto, SUM(Cantidad * PrecioUnidad) AS "Base Imponible", SUM(Cantidad * PrecioUnidad * 0.18) AS IVA, SUM(Cantidad * PrecioUnidad) +SUM(Cantidad * PrecioUnidad * 0.18) AS TOTAL
+FROM DetallePedidos
+WHERE CodigoProducto LIKE "FR%"
+GROUP BY CodigoProducto
+ORDER BY TOTAL DESC;
