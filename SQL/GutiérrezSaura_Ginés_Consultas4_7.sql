@@ -98,7 +98,7 @@ GROUP BY Gama;
 
 -- 17. Sacar un listado de los 20 códigos de productos más pedidos ordenado por cantidad pedida. (pista: Usar el filtro LIMIT de MySQL o el filtro rownum de Oracle.
 
-SELECT CodigoProducto
+SELECT CodigoProducto, SUM(canitdades)
 FROM DetallePedidos
 GROUP BY CodigoProducto
 ORDER BY COUNT(*) DESC
@@ -109,7 +109,7 @@ LIMIT 20;
 
 SELECT CodigoPedido, CodigoCliente, FechaEsperada, FechaEntrega
 FROM Pedidos
-WHERE FechaEntrega < DATE_SUB(FechaEsperada, INTERVAL 2 DAY);
+WHERE FechaEntrega <= DATE_SUB(FechaEsperada, INTERVAL 2 DAY);
 
 --  19. Sacar la facturación que ha tenido la empresa en toda la historia, indicando la base imponible, el IVA y el total facturado. NOTA: La base imponible 
 -- se calcula sumando el coste del producto por el número de unidades vendidas. El IVA, es el 18 % de la base imponible, y el total, la suma de los dos campos anteriores.
