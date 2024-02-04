@@ -34,9 +34,10 @@ HAVING SUM(Cantidad) <15;
 /*4. Mostrar las fechas en las que se entregaron entre 1 y 10
 pedidos. Mostrar también la cantidad de pedidos entregados.*/
 
-SELECT FechaEntrega, COUNT DISTINCT(CodigoPedidos)
+SELECT FechaEntrega, COUNT(*) AS TotalPedidos
 FROM Pedidos
 GROUP BY FechaEntrega
-HAVING COUNT DISTINCT(CodigoPedidos) BETWEEN 1 AND 10;
+HAVING COUNT(*) BETWEEN 1 AND 10
+ORDER BY TotalPedidos DESC;
 
 
