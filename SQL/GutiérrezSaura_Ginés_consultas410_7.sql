@@ -31,16 +31,25 @@ INNER JOIN Empleados e ON c.CodigoEmpleadoRepVentas=e.CodigoEmpleado
 WHERE p.CodigoCliente IS NULL;
 
 /*# 5. Sacar un listado de clientes donde aparezca el nombre de su comercial y la
-ciudad donde está su oficina.
-*/
+ciudad donde está su oficina.*/
+
+SELECT c.NombreCliente, e.Nombre as "Nombre Comercial", o.Ciudad as "Ciudad Oficina"
+FROM Clientes c INNER JOIN Empleados e ON c.CodigoEmpleadoRepVentas = e.CodigoEmpleado INNER JOIN Oficinas o USING(CodigoOficina)
+GROUP BY c.NombreCliente;
 
 /* # 6. Sacar el nombre, apellidos, oficina y cargo de aquellos que no sean represen-
-tantes de ventas.
-*/
+tantes de ventas.*/
+
+SELECT Nombre, Apellido1, Apellido2, CodigoOficina, Puesto
+FROM Empleados
+WHERE (Puesto != "Representante Ventas");
 
 /*# 7. Sacar cuántos empleados tiene cada oficina, mostrando el nombre de la ciudad
-donde está la oficina.
-*/
+donde está la oficina.*/
+
+SELECT o.Ciudad, COUNT(e.CodigoEmpleado) as "Total Empleados"
+FROM Oficinas o JOIN Empleados e USING(CodigoOficina)
+GROUP BY o.Ciudad;
 
 /*# 8. Sacar un listado con el nombre de los empleados, y el nombre de sus respectivos
 jefes.
