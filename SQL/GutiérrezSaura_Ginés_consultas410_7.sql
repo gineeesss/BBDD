@@ -31,37 +31,63 @@ INNER JOIN Empleados e ON c.CodigoEmpleadoRepVentas=e.CodigoEmpleado
 WHERE p.CodigoCliente IS NULL;
 
 /*# 5. Sacar un listado de clientes donde aparezca el nombre de su comercial y la
-ciudad donde está su oficina.
-*/
+ciudad donde está su oficina.*/
+
+SELECT c.NombreCliente, e.Nombre as "Nombre Comercial", o.Ciudad as "Ciudad Oficina"
+FROM Clientes c INNER JOIN Empleados e ON c.CodigoEmpleadoRepVentas = e.CodigoEmpleado INNER JOIN Oficinas o USING(CodigoOficina)
+GROUP BY c.NombreCliente;
 
 /* # 6. Sacar el nombre, apellidos, oficina y cargo de aquellos que no sean represen-
-tantes de ventas.
-*/
+tantes de ventas.*/
+
+SELECT Nombre, Apellido1, Apellido2, CodigoOficina, Puesto
+FROM Empleados
+WHERE (Puesto != "Representante Ventas");
 
 /*# 7. Sacar cuántos empleados tiene cada oficina, mostrando el nombre de la ciudad
-donde está la oficina.
-*/
+donde está la oficina.*/
+
+SELECT o.Ciudad, COUNT(e.CodigoEmpleado) as "Total Empleados"
+FROM Oficinas o JOIN Empleados e USING(CodigoOficina)
+GROUP BY o.Ciudad;
+
+
+SELECT o.CodigoOficina, o.Ciudad, COUNT(e.CodigoEmpleado) as "Total Empleados"
+FROM Oficinas o JOIN Empleados e USING(CodigoOficina)
+GROUP BY o.CodigoOficina;
 
 /*# 8. Sacar un listado con el nombre de los empleados, y el nombre de sus respectivos
-jefes.
-*/
+jefes.*/
+
+SELECT CONCAT(e.Nombre, "",e.Apellido1) as Empleado,CONCAT(ej.Nombre,"",ej.Apellido1) as Jefe
+FROM Empleados e INNER JOIN Empleados ej ON e.CodigoJefe = ej.CodigoEmpleado;
 
 /*# 9. Sacar el nombre, apellido, oficina (ciudad) y cargo del empleado que no repre-
-sente a ningún cliente.
-*/
+sente a ningún cliente.*/
 
-/*# 10. Sacar la media de unidades en stock de los productos agrupados por gama.
-*/
+SELECT CONCAT(e.Nombre,"",e.Apellido1) AS Empleado, o.Ciudad, e.Puesto
+FROM Empleados e LEFT JOIN Clientes c ON e.CodigoEmpleado = c.CodigoEmpleadoRepVentas
+INNER JOIN Oficinas o USING(CodigoOficina)
+WHERE c.CodigoEmpleadoRepVentas IS NULL;
+
+/*# 10. Sacar la media de unidades en stock de los productos agrupados por gama.*/
+
+SELECT ROUND(AVG(CantidadEnStock),2) as "Media de los Productos", Gama
+FROM Productos
+GROUP BY Gama;
 
 /*# 11. Sacar los clientes que residan en la misma ciudad donde hay una oficina, indi-
-cando dónde está la oficina.
-*/
+cando dónde está la oficina.*/
 
-/*# 13. Sacar el número de clientes que tiene asignado cada representante de ventas.
-*/
+SELECT c.NOmbreCliente, o.Ciudad
+FROM Clientes c INNER JOIN Oficinas o USING(Ciudad);
 
-/*# 12. Sacar los clientes que residan en ciudades donde no hay oficinas ordenado por
-*/
+/*# 13. Sacar el número de clientes que tiene asignado cada representante de ventas.*/
+
+SELECT DISTINCT e.Nombre, COUNT(c.NombreCliente) AS "Total CLientes Atendidos"
+FROM Clientes c  JOIN Empleados e ON c.CodigoEmpleadoRepVentas = e.CodigoEmpleado;
+
+/*# 12. Sacar los clientes que residan en ciudades donde no hay oficinas ordenado por*/
 
 /*# la ciudad donde residen.
 */
