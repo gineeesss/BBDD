@@ -7,8 +7,7 @@ GROUP BY c.NombreCliente;
 
 
 /*# 2. Sacar un listado con los nombres de los clientes y el total pagado por cada uno
-de ellos.
-*/
+de ellos.*/
 
 SELECT c.NombreCliente, SUM(Cantidad)  AS "Total Pago por CLiente"
 FROM Clientes c INNER JOIN Pagos p USING(CodigoCliente)
@@ -82,7 +81,14 @@ cando dónde está la oficina.*/
 SELECT c.NOmbreCliente, o.Ciudad
 FROM Clientes c INNER JOIN Oficinas o USING(Ciudad);
 
+--Hay un registro con un espacio delante de la ciudad, por lo que nunca va a ser igual, se puede usar TRIM en el JOIN
+--que hace queignore los espacios delante
+SELECT c.NOmbreCliente, o.Ciudad
+FROM Clientes c INNER JOIN Oficinas o ON  TRIM(c.Ciudad)=TRIM(o.Ciudad);
+
+
 /*# 12. Sacar los clientes que residan en ciudades donde no hay oficinas ordenado por la ciudad donde residen.*/
+
 
 SELECT c.CodigoCliente, c.NOmbreCliente, c.Ciudad
 FROM Clientes c LEFT JOIN Oficinas o USING(Ciudad)
@@ -92,12 +98,12 @@ ORDER BY c.Ciudad;
 /*# 13. Sacar el número de clientes que tiene asignado cada representante de ventas.*/
 
 SELECT e.CodigoEmpleado, e.Nombre, COUNT(c.CodigoCliente) as "Total Clientes Asociados"
-FROM Empleados e LEFT JOIN Clientes c ON e.CodigoEmpleado = c.CodigoEmpleadoRepVentas
-GROUP BY e.CodigoEmpleado, e.Nombre;
+FROM Empleados e INNER JOIN Clientes c ON e.CodigoEmpleado = c.CodigoEmpleadoRepVentas
+GROUP BY e.CodigoEmpleado, e.Nombre
+ORDER BY COUNT(c.CodigoCliente) DESC;
 
 /*# 14. Sacar cuál fue el cliente que hizo el pago con mayor cuantía y el que hizo el
-pago con menor cuantía.
-*/
+pago con menor cuantía.*/
 
 SELECT c.CodigoCliente, c.NombreCliente, p.Cantidad AS MayorCuantia
 FROM Pagos p JOIN Clientes c USING(CodigoCliente)
@@ -112,7 +118,11 @@ WHERE p.Cantidad = (
     SELECT MIN(Cantidad)
     FROM Pagos
 );
-
+-- más sencillo
+SELECT CodigoCliente, Cantidad AS Pago
+FROM Pagos
+WHERE Cantidad =(SELECT MAX(Cantidad) FROM Pagos)
+OR Cantidad=(SELECT MIN(Cantidad) FROM Pagos);
 
 
 /*# 15. Sacar un listado con el precio total de cada pedido*/
@@ -131,7 +141,7 @@ FROM Clientes c JOIN Pedidos p USING(CodigoCliente)
 JOIN DetallePedidos dp USING (CodigoPedido)
 WHERE YEAR(p.FechaPedido) = 2008
 GROUP BY c.CodigoCliente, c.NombreCliente
-HAVING SUM(dp.Cantidad * dp.PrecioUnidad) > 2000;
+HAVING SUM(dp.Cantidad * dp.PrecioUnidad) > 2000; --para filtrar los resultados de las agrupaciones
 
 
 /*# 17. Sacar cuántos pedidos tiene cada cliente en cada estado.
