@@ -90,15 +90,16 @@ GROUP BY e.Nombre;
 
 /* 14. Tapones por partido de los jugadores de los 'Blazers'. */
 
-SELECT ROUND((SUM(Tapones_por_partido)/COUNT(j.codigo)),2) AS "Tapones por Partido"
+SELECT ROUND((SUM(Tapones_por_partido)/COUNT(j.codigo)),2) AS "Tapones por Partido" /*usar AVG en vez de hacer yo laedia*/
 FROM estadisticas est INNER JOIN jugadores j ON est.jugador = j.codigo
 WHERE j.Nombre_equipo LIKE "%Blazers";
 
 /* 15. Media de rebotes de los jugadores de la conferencia Este 'East'. */
 
-SELECT ROUND((SUM(Rebotes_por_partido)/COUNT(j.codigo)),2) AS "Media Rebotes jugadores Este"
+SELECT j.Nombre, ROUND((SUM(Rebotes_por_partido)/COUNT(j.codigo)),2) AS "Media Rebotes jugadores Este"
 FROM estadisticas e INNER JOIN jugadores j ON e.jugador = j.codigo
-WHERE j.Nombre_equipo IN (SELECT Nombre FROM equipos WHERE Conferencia="East");
+WHERE j.Nombre_equipo IN (SELECT Nombre FROM equipos WHERE Conferencia="East")
+GROUP BY j.Nombre; /*Es por cada jugador, no media de todos*/
 
 /* 16. Rebotes por partido de los jugadores de los equipos de Los Angeles. */
 
@@ -128,13 +129,13 @@ GROUP BY Nombre_equipo;
 
 /* 20. ¿Cuánto mide el pívot más alto de la nba? */
 
-SELECT MAX(Altura)
-FROM jugadores
-WHERE PosiCIon = "C" OR Posicion LIKE "%-C%" OR Posicion LIKE "C-%";
+    SELECT Nombre, MAX(Altura)
+    FROM jugadores
+    WHERE PosiCIon = "C" OR Posicion LIKE "%-C%" OR Posicion LIKE "C-%";
 
 /* 21. ¿Cuánto pesa (en libras y en kilos) el pívot más alto de la NBA? */
 
-SELECT MAX(Peso) AS "Peso en Libras", MAX(Peso)*0.45 AS "Peso en Kilos"
+SELECT Nobre, MAX(Peso) AS "Peso en Libras", MAX(Peso)*0.45 AS "Peso en Kilos"
 FROM jugadores
 WHERE PosiCIon = "C" OR Posicion LIKE "%-C%" OR Posicion LIKE "C-%";
 
@@ -149,6 +150,10 @@ WHERE Nombre LIKE "Y%";
 /* 24. Número total de jugadores de cada división. */
 
 /* 25. Peso medio en kilos y en libras de los jugadores de los 'Raptors'. */
+
+SELECT ROUND(AVG(Peso),2) AS "Peso medio en Libras", ROUND(AVG(Peso)*0.45,2) AS "Peso Medio en Kilos"
+FROM jugadores
+WHERE Nombre_equipo = "Raptors";
 
 /* 26. Mostrar un listado de jugadores con el formato Tombre(Equipo) en una sola columna. */
 
