@@ -84,23 +84,65 @@ WHERE jugadores.Nombre = 'Lebron James' AND estadisticas.temporada BETWEEN '03/0
 
 /* 13. Número de jugadores que tiene cada equipo de la conferencia este 'East'. */
 
+SELECT e.Nombre, COUNT(*) AS "Numero Jugadores Conferencia East"
+FROM jugadores j INNER JOIN equipos e ON j.Nombre_equipo = e.Nombre
+GROUP BY e.Nombre;
+
 /* 14. Tapones por partido de los jugadores de los 'Blazers'. */
+
+SELECT ROUND((SUM(Tapones_por_partido)/COUNT(j.codigo)),2) AS "Tapones por Partido"
+FROM estadisticas est INNER JOIN jugadores j ON est.jugador = j.codigo
+WHERE j.Nombre_equipo LIKE "%Blazers";
 
 /* 15. Media de rebotes de los jugadores de la conferencia Este 'East'. */
 
+SELECT ROUND((SUM(Rebotes_por_partido)/COUNT(j.codigo)),2) AS "Media Rebotes jugadores Este"
+FROM estadisticas e INNER JOIN jugadores j ON e.jugador = j.codigo
+WHERE j.Nombre_equipo IN (SELECT Nombre FROM equipos WHERE Conferencia="East");
+
 /* 16. Rebotes por partido de los jugadores de los equipos de Los Angeles. */
+
+SELECT ROUND(SUM(Rebotes_por_partido)/COUNT(*),2) AS "Rebotes por partidos de los jugadores en Los Angeles"
+FROM estadisticas e INNER JOIN jugadores j ON e.jugador = j.codigo
+WHERE Nombre_equipo IN(SELECT Nombre FROM equipos WHERE Ciudad="Los Angeles");
 
 /* 17. Número de jugadores que tiene cada equipo de la división North West. */
 
+SELECT COUNT(*) AS "Numero Jugadores", e.Nombre
+FROM jugadores j INNER JOIN equipos e ON j.Nombre_equipo = e.Nombre 
+WHERE e.Division = "NorthWest"
+GROUP BY e.Nombre;
+
 /* 18. Número de jugadores de España y Francia en la NBA. */
+
+SELECT COUNT(*) AS "Jugadores españoles y franceses"
+FROM jugadores
+WHERE Procedencia = "Spain" OR Procedencia = "France";
 
 /* 19. Número de pivots 'C' que tiene cada equipo. */
 
+SELECT Nombre_equipo, COUNT(*)
+FROM jugadores
+WHERE PosiCIon = "C" OR Posicion LIKE "%-C%" OR Posicion LIKE "C-%"
+GROUP BY Nombre_equipo;
+
 /* 20. ¿Cuánto mide el pívot más alto de la nba? */
+
+SELECT MAX(Altura)
+FROM jugadores
+WHERE PosiCIon = "C" OR Posicion LIKE "%-C%" OR Posicion LIKE "C-%";
 
 /* 21. ¿Cuánto pesa (en libras y en kilos) el pívot más alto de la NBA? */
 
+SELECT MAX(Peso) AS "Peso en Libras", MAX(Peso)*0.45 AS "Peso en Kilos"
+FROM jugadores
+WHERE PosiCIon = "C" OR Posicion LIKE "%-C%" OR Posicion LIKE "C-%";
+
 /* 22. Número de jugadores que empiezan por 'Y'. */
+
+SELECT COUNT(*) AS "Numero de jugadores que empiezan por Y"
+FROM jugadores
+WHERE Nombre LIKE "Y%";
 
 /* 23. Jugadores que no metieron ningún punto en alguna temporada. */
 
