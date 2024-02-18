@@ -155,24 +155,67 @@ SELECT ROUND(AVG(Peso),2) AS "Peso medio en Libras", ROUND(AVG(Peso)*0.45,2) AS 
 FROM jugadores
 WHERE Nombre_equipo = "Raptors";
 
-/* 26. Mostrar un listado de jugadores con el formato Tombre(Equipo) en una sola columna. */
+/* 26. Mostrar un listado de jugadores con el formato Nombre(Equipo) en una sola columna. */
+SELECT CONCAT(j.Nombre, '(', e.Nombre, ')') AS Nombre_Equipo
+FROM jugadores j
+INNER JOIN equipos e ON j.Nombre_equipo = e.Nombre;
 
-/* 27. Puntuación más baja de un partido de la BA. */
+/* 27. Puntuación más baja de un partido de la NBA. */
+SELECT MIN(puntos_local) AS Puntuación_Más_Baja
+FROM partidos
+UNION
+SELECT MIN(puntos_visitante)
+FROM partidos;
 
 /* 28. Primeros 10 jugadores por orden alfabético. */
+SELECT Nombre
+FROM jugadores
+ORDER BY Nombre
+LIMIT 10;
 
 /* 29. Temporada con más puntos por partido de 'Kobe Bryant'. */
+SELECT temporada
+FROM estadisticas
+WHERE jugador = (SELECT codigo FROM jugadores WHERE Nombre = 'Kobe Bryant')
+ORDER BY Puntos_por_partido DESC
+LIMIT 1;
 
 /* 30. Número de bases 'G' que tiene cada equipo de la conferencia este 'East'. */
+SELECT Nombre_equipo, COUNT(*) AS Numero_de_Bases
+FROM jugadores
+WHERE Posicion = 'G' AND Nombre_equipo IN (SELECT Nombre FROM equipos WHERE Conferencia = 'East')
+GROUP BY Nombre_equipo;
 
 /* 31. Número de equipos que tiene cada conferencia. */
+SELECT Conferencia, COUNT(*) AS Numero_de_Equipos
+FROM equipos
+GROUP BY Conferencia;
 
 /* 32. Nombre de las divisiones de la conferencia Este. */
+SELECT DISTINCT Division
+FROM equipos
+WHERE Conferencia = 'East';
 
 /* 33. Máximo reboteador de los 'Suns'. */
+SELECT j.Nombre
+FROM jugadores j
+INNER JOIN equipos e ON j.Nombre_equipo = e.Nombre
+INNER JOIN estadisticas est ON j.codigo = est.jugador
+WHERE e.Nombre = 'Suns'
+ORDER BY est.Rebotes_por_partido DESC
+LIMIT 1;
 
-/* 34. Máximo anotador de la toda base de datos en una temporada. */
+/* 34. Máximo anotador de toda la base de datos en una temporada. */
+SELECT j.Nombre
+FROM jugadores j
+INNER JOIN estadisticas est ON j.codigo = est.jugador
+WHERE est.Puntos_por_partido = (SELECT MAX(Puntos_por_partido) FROM estadisticas);
 
-/* 35. Sacar cuántas letras tiene el nombre de cada jugador de los 'grizzlies' (Usar función LENGTH). */
+/* 35. Sacar cuántas letras tiene el nombre de cada jugador de los 'Grizzlies' (Usar función LENGTH). */
+SELECT Nombre, LENGTH(Nombre) AS Longitud_Nombre
+FROM jugadores
+WHERE Nombre_equipo = 'Grizzlies';
 
 /* 36. ¿Cuántas letras tiene el equipo con nombre más largo de la NBA (Ciudad y Nombre)? */
+SELECT MAX(LENGTH(Nombre) + LENGTH(Ciudad)) AS Longitud_Total
+FROM equipos;
