@@ -37,7 +37,8 @@ WHERE Salario BETWEEN 1250 AND 1300
 empresa junto con su nombre.
 
 
-SELECT Nombre, ROUND(DATEDIFF(LEAST(CURRENT_DATE, '2024-02-20'), Fecha_ingreso) / 30) AS Meses_en_empresa
+-- Usar función TIMESTAMPDIFF --> TIMESTAMPDIFF(Month, Fecha_ingreso, NOW()) NOW O CURRENT_DATE O CURDATE
+SELECT Nombre, TIMESTAMPDIFF(Month, Fecha_ingreso, NOW()) AS Meses_en_empresa
 FROM EMPLEADOS;
 
 
@@ -46,7 +47,7 @@ nombre, el departamento y la fecha de ingreso de cada uno de ellos.
 
 SELECT Nombre, Departamento, Fecha_ingreso
 FROM EMPLEADOS
-WHERE DATEDIFF(CURRENT_DATE, Fecha_ingreso) / 365 > 25;
+WHERE TIMESTAMPDIFF(YEAR, Fecha_ingrreso, CURRENT_DATE())> 25;
 
 
 7. Hallar, por orden alfabético, los nombres de los empleados tales que si se les da
