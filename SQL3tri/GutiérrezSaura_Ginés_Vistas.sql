@@ -17,49 +17,61 @@ SELECT * FROM vista1;
 INSERT INTO DEPARTAMENTOS VALUES
 (135, 10, 150, 'P', 18, 120, "SERVICIOS");
 
-SELECT * FROM vista1;
 
 # 3. Comprobar los datos de la vista1.
 
+SELECT * FROM vista1;
 
 
 # 4. Borrar el departamento 111 de la tabla departamentos.
 
+ALTER TABLE EMPLEADOS
+DROP FOREIGN KEY fk_Departamento;
 
+DELETE FROM DEPARTAMENTOS
+WHERE Numero=111;
 
 # 5. Comprobar los datos de la vista1.
 
-
+SELECT * FROM vista1;
 
 # 6. Cambiar el nombre del atributo Nombre de la tabla departamentos a Nom.
 
-
+ALTER TABLE DEPARTAMENTOS 
+CHANGE COLUMN Nombre Nom VARCHAR(25);
 
 # 7. Comprobar los datos de la vista1. ¿Qué ocurre?
 
+SELECT * FROM vista1;
 
 
 # 8. Cambiar el nombre del atributo Nom de la tabla departamentos a Nombre.
 
-
+ALTER TABLE DEPARTAMENTOS 
+CHANGE COLUMN Nom Nombre VARCHAR(25);
 
 # 9. Crear una vista llamada vista2 que contenga el número de empleados que tiene cada departamento, y el
 # nombre del departamento (incluso aquellos que no tienen empleados). Los nombres de los campos son:
 # departamento y totalEmpleados
 
-
+CREATE VIEW vista2 AS 
+SELECT d.Nombre, COUNT(*) AS totalEmpleados
+FROM DEPARTAMENTOS d LEFT JOIN EMPLEADOS e ON d.Numero = e.Departamento
+GROUP BY Nombre;
 
 # 10. Comprobar los datos de vista2.
 
-
+SELECT * FROM vista2;
 
 # 11. Insertar un nuevo empleado en la tabla empleados con los datos que quieras.
 
+INSERT INTO EMPLEADOS VALUES
+(9, 135, "666", '2020-01-04', '2024-02-29', 412.21, 1, 4, "Charmander");
 
 
  12. Comprobar los datos de vista2 ¿Se ha actualizado?
 
-
+SELECT * FROM vista2;
 
 # 13. Actualizar el sueldo de Julio Perez a 1700.
 
