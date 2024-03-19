@@ -38,7 +38,7 @@ ON jardneria.Clientes FROM paco@localhost;
 #7. Conéctate con root y elimina todos los permisos que has concedido a Paco y Juan.
 
 REVOKE ALL PRIVILEGES
-ON *.* FROM paco@localhost;
+ON *.* FROM 'paco'@'localhost';
 
 REVOKE ALL PRIVILEGES
 ON *.* FROM juan@localhost WITH GRANT OPTION;
@@ -50,6 +50,9 @@ ON jardineria.Oficinas TO juan@localhost;
 
 #9. Conéctate con juan y ejecuta la query 'SELECT * from jardineria.Oficinas' ¿Qué sucede?
 
-
+MYSQL -ujuan -pjuan
+SELECT * from jardineria.Oficinas;
 
 #10. Borra el usuario paco@localhost. 
+
+SHOW GRANTS FOR 'paco'@'localhost';
