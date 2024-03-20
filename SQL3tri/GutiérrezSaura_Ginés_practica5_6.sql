@@ -10,10 +10,14 @@ CREATE USER juan@localhost IDENTIFIED BY 'juan';
 
 GRANT USAGE ON *.* TO juan@localhost;
 
+SELECT User, Host FROM mysql.user;
+
 #3. Otorga al usuario paco@localhost permisos de select en la tabla jardineria. Clientes y comprueba que se pueda consultar la tabla.
 
 GRANT SELECT
 ON jardineria.Clientes TO paco@localhost;
+
+SHOW GRANTS FOR paco@localhost;
 
 mysql -upaco -ppaco
 
@@ -23,9 +27,12 @@ FROM jardineria.Clientes;
 #4. Otorga al usuario juan@localhost permisos de select, insert y update en las tablas de la base de datos jardineria con opcion GRA T.
 
 GRANT SELECT,INSERT,UPDATE
-ON jardineria.* TO juan@localhost;
+ON jardineria.* TO juan@localhost
+WITH GRANT OPTION;
 
 #5. Conéctate con el usuario juan y otorga permisos a paco de selección en la tabla jardineria.Empleados.
+
+mysql -juan -pjuan
 
 GRANT SELECT 
 ON jardineria.Empleados TO paco@localhost;
@@ -33,20 +40,37 @@ ON jardineria.Empleados TO paco@localhost;
 #6. Quítale ahora los permisos a paco de selección sobre la tabla jardineria.Clientes.
 
 REVOKE SELECT
-ON jardneria.Clientes FROM paco@localhost;
+ON jardneria.Clientes 
+FROM paco@localhost;
 
 #7. Conéctate con root y elimina todos los permisos que has concedido a Paco y Juan.
 
 REVOKE ALL PRIVILEGES
-ON *.* FROM 'paco'@'localhost';
+ON *.* 
+FROM 'paco'@'localhost';
 
-REVOKE ALL PRIVILEGES
-ON *.* FROM juan@localhost WITH GRANT OPTION;
+REVOKE ALL
+ON *.* 
+FROM juan@localhost;
+
+REVOKE SELECT
+ON jardineria.Empleados 
+FROM 'paco'@'localhost';
+
+REVOKE SELECT, INSERT, UPDATE, GRANT OPTION
+ON jardineria.* 
+FROM juan@localhost;
+
+SHOW GRANTS FOR juan@localhost;
+SHOW GRANTS FOR 'paco'@'localhost';
+
+--Para quitar un privilegio hay que quitarle exactamente lo que se ha dado en específico
 
 #8. Otorga a juan los permisos de SELECT sobre las columnas CodigoOficina y Ciudad de la tabla Oficinas de la base de datos jardineria.
 
 GRANT SELECT(CodigoOficina,Ciudad)
-ON jardineria.Oficinas TO juan@localhost;
+ON jardineria.Oficinas 
+TO juan@localhost;
 
 #9. Conéctate con juan y ejecuta la query 'SELECT * from jardineria.Oficinas' ¿Qué sucede?
 
@@ -54,5 +78,7 @@ MYSQL -ujuan -pjuan
 SELECT * from jardineria.Oficinas;
 
 #10. Borra el usuario paco@localhost. 
+
+DROP USER paco@localhost;
 
 SHOW GRANTS FOR 'paco'@'localhost';
