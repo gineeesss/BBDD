@@ -53,31 +53,51 @@
 -- 10. Vamos a retirar el privilegio de inserción sobre el campo Puesto al usuario
 -- anterior.
 
-
+REVOKE INSERT (Puesto) ON jardineria
 
 -- 11. Eliminar ahora a usuario03. Comprobar que se ha eliminado consultando en la
 -- base de datos mysql.
 
+DROP USER usuario03@ip;
 
-
+SELECT Host, USER
+FROM mysql.user;
+S
 -- 12. Crear nuevamente al usuario03 en el equipo local pero ahora como
 -- superusuario, es decir, hay que darle todos los privilegios incluido el
 -- privilegio GRANT OPTION. Tendrá como contraseña “super”.
 
+CREATE USER usuario03@localhost IDENTIFIED BY 'super';
 
+GRANT ALL RPIVILEGES ON *.* TO usuario03@localhost WITH GRANT OPTION;
 
 -- 13. Crear desde el usuario03 un nuevo usuario llamado usuario06 y concederle
 -- los privilegios de SELECT, DELETE, UPDATE y ALTER sobre la tabla clientes de la
 -- base de datos jardineria.
 
+CREATE USER usuario06@localhost;
 
+GRANT SELECT, DELETE, UPDATE, ALTER ON jardineria.Clientes TO usuario06@localhost;
 
 -- 14. Conceder al usuario06 el privilegio de GRANT OPTION y el privilegio de
 -- INSERT sobre las columnas CodigoEmpleado, CodigoJefe y Puesto de la tabla
 -- empleados. Comprobamos que se han asignado los privilegios citados al
 -- usuario06 consultando en la base de datos mysql.
 
+GRANT INSERT (CodigoEmpleado, CodigoJefe, Puesto) ON jardineria.empleados
+TO usuario06@localhost WITH GRANT OPTION;
 
+DESCRIBE mysql.columns_priv;
+
+SELECT Table_name, Table_priv
+FROM mysql.tables_priv
+WHERE User = 'usuario06'
+AND Host = 'localhost';
+
+SELECT Table_name, Table_priv
+FROM mysql.columns_priv
+WHERE User = 'usuario06'
+AND Host = 'localhost';
 
 -- 15. Crear al usuario usuario07 desde el usuario root y luego, desde usuario06,
 -- concederle el privilegio INSERT para las columnas CodigoEmpleado y Puesto de
@@ -86,8 +106,20 @@
 -- para comprobar que todo ha ido bien, consultando en la base de datos
 -- mysql.
 
+CREATE USER usuario07@localhost;
 
+GRANT INSERT (CodigoEmpleado, Puesto) ON jardineria.Empleados TO usuario07@localhost;
+
+SELECT Db, Table_name, Column_name, columns_priv
+FROM mysql.columns_priv
+WHERE User = 'usuario07@localhost' AND HOST = 'localhost';
 
 -- 16. Quitar el privilegio INSERT sobre los campos CodigoJefe y Puesto a usuario06
 -- desde el usuario usuario03 (que fué quien se lo concedió).
 -- Comprobar que todo ha ido correctamente con una consulta en mysql.
+
+REVOKE INSERT (CodigoJefe, Puesto) ON jardineria.Empleados FROM usuario06@localhost;
+
+SELECT Db, Table_name, Column_name, columns_priv
+FROM mysql.columns_priv
+WHERE User = 'usuario06' AND Host = 'localhost';
