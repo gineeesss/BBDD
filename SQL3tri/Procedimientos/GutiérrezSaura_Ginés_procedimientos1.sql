@@ -23,8 +23,6 @@ DELIMITER ;
 CALL pa_media_var;
 
 
-
-
 --2. pa_media_par: Modificar el procedimiento anterior de forma que calcule la media de edad de
 --las mascotas del propietario que se desee. Para ello, el nombre del propietario se introducirá
 --mediante un parámetro.
@@ -50,6 +48,32 @@ CALL pa_media_par('Pedro López');
 --un parámetro de salida. Al igual que el procedimiento pa_media_par, el nombre del propietario a
 --buscar se introducirá mediante un parámetro de entrada.
 
+DROP PROCEDURE IF EXISTS pa_media_par2;
+DELIMITER //
+CREATE PROCEDURE pa_media_par2 (nombre VARCHAR(40),mediaEdad DECIMAL(4,2))
+BEGIN
+	DECLARE media_persona DECIMAL(4,2);
+	
+	SELECT AVG(YEAR(CURDATE())-YEAR(fechaNacim)) INTO media_persona
+	FROM mascotas
+	WHERE propietario=nombre;
+	
+	SELECT CONCAT('La media de edad de los animales de ',nombre,' es: ',media_persona) AS 'Media';
+	
+	SET mediaEdad = media_persona;
+END//
+DELIMITER ;
 
 
+CALL pa_media_par2('Pedro López',@mediaEdad);
 --4. pa_mascotas_borrar: Eliminar el registro de una mascota cuyo nombre se pasará como parámetro.
+
+DROP PROCEDURE IF EXISTS pa_mascotas_borrar;
+DELIMITER //
+CREATE PROCEDURE  pa_mascotas_borrar(nombreMascota VARCHAR(10))
+BEGIN
+	DELETE FROM mascotas WHERE nombre=nombreMascota;
+END//
+DELIMITER ;
+
+
