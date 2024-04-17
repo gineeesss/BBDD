@@ -14,6 +14,10 @@ END;
 //
 DELIMITER ;
 
+CREATE FUNCTION fa_par(n1 int) RETURNS INT
+BEGIN
+    RETURN n1%2 ;
+END //
 
 -- 2
 DELIMITER //
@@ -36,29 +40,36 @@ END;
 DELIMITER ;
 
 
- -- 3
+ -- 3 pa_veces_repeat
+
 DELIMITER //
-CREATE PROCEDURE pa_veces_repeat(numero INT, veces INT)
+
+DROP PROCEDURE IF EXISTS pa_veces_repeat;
+
+CREATE PROCEDURE pa_veces_repeat(IN a int, IN b int)
 BEGIN
     DECLARE contador INT;
-    DECLARE salida VARCHAR(255);
-    IF veces > 0 THEN
-        SET contador = 1;
-        SET salida = '';
+    DECLARE secuencia VARCHAR(69);
+    SET contador = b;
+    SET secuencia = '';
+    IF b > 0 THEN
         REPEAT
-            SET salida = CONCAT(salida, numero, ' ');
-            SET contador = contador + 1;
-        UNTIL contador > veces END REPEAT;
-        SELECT salida AS Resultado;
-    ELSE
-        SELECT 'Error: El segundo parámetro debe ser un número positivo.' AS Resultado;
+            SET secuencia = CONCAT(secuencia,a,' ');
+            SET contador = contador - 1;
+        UNTIL contador = 0 END REPEAT;
+        SELECT secuencia AS holi;  
+    ELSE 
+        SELECT 'Erro, el segundo número tiene que ser positivo' AS GUAK;
     END IF;
 END;
+
 //
-DELIMITER ;
+
+delimiter ;
 
 
--- 4
+
+-- 4 pa_veces_while
 DELIMITER //
 CREATE PROCEDURE pa_veces_while(numero INT, veces INT)
 BEGIN
@@ -78,3 +89,68 @@ BEGIN
 END;
 //
 DELIMITER ;
+
+
+--5 pa_tabla
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS pa_tabla;
+
+CREATE PROCEDURE pa_tabla(IN a INT)
+BEGIN
+    DECLARE contador INT;
+    DECLARE resultado INT;
+    DECLARE salida VARCHAR(255);
+    SET contador = 1;
+    SET salida = '';
+    SET resultado = 0;
+    IF a > 0 THEN
+        REPEAT
+            SET resultado = a * contador;
+            SET contador = contador + 1;
+            SET salida = CONCAT(salida,contador-1,' x ',a,' = ',resultado,'\n');
+        UNTIL contador = 11 END REPEAT;    
+        SELECT salida AS nya;
+    ELSE 
+        SELECT 'El numero no es positivo/entero' AS guat;
+    END IF;
+END;
+
+//
+
+delimiter ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -24,12 +24,18 @@ CREATE TABLE mascotas_mayores (
 	PRIMARY KEY (nombre)
 );
 
+--ESO DE ARRIBA ES UNA MIERDA, CREAR LAS TABLAS USANDO LIKE
+CREATE TABLE mascotas_jovenes LIKE mascotas;
+CREATE TABLE mascotas_mayores LIKE mascotas;
+
 DELIMITER //
 DROP PROCEDURE IF EXISTS pa_condicion1;
 CREATE PROCEDURE pa_condicion1(IN nombreInsert varchar(10), IN fechaNacimInsert date, IN propietarioInsert varchar(40))
 BEGIN
+    INSERT INTO mascotas_mayores VALUES(nombreInsert,fechaNacimInsert,propietarioInsert);
 	DECLARE edadMascota INT;
 	SET edadMascota=TIMESTAMPDIFF(YEAR,fechaNacimInsert,CURDATE());
+    -- si tuviese la funcion fa_edad_mascota, haría SELECT fa_edad_mascota(nombreInsert) FROM mascotas;
 	IF edadMascota > 5 THEN
 	INSERT INTO mascotas_mayores
 	VALUES(nombreInsert,fechaNacimInsert,propietarioInsert);
