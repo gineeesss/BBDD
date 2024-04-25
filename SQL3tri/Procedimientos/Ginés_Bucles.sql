@@ -20,6 +20,8 @@ BEGIN
 END //
 
 -- 2
+DROP PROCEDURE IF EXISTS pa_impares;
+
 DELIMITER //
 CREATE PROCEDURE pa_impares(numero INT)
 BEGIN
@@ -61,7 +63,7 @@ BEGIN
     ELSE 
         SELECT 'Erro, el segundo número tiene que ser positivo' AS GUAK;
     END IF;
-END;
+END
 
 //
 
@@ -71,6 +73,7 @@ delimiter ;
 
 -- 4 pa_veces_while
 DELIMITER //
+DROP PROCEDURE IF EXISTS pa_veces_while;
 CREATE PROCEDURE pa_veces_while(numero INT, veces INT)
 BEGIN
     DECLARE contador INT;
@@ -88,7 +91,7 @@ BEGIN
     END IF;
 END;
 //
-DELIMITER ;
+delimiter ;
 
 
 --5 pa_tabla
@@ -115,17 +118,8 @@ BEGIN
         SELECT 'El numero no es positivo/entero' AS guat;
     END IF;
 END;
-
 //
-
 delimiter ;
-
-
-
-
-
-
-
 
 
 
