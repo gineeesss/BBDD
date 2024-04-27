@@ -1,0 +1,36 @@
+USE banco
+
+DROP TRIGGER IF EXISTS dp_creo_historial;
+CREATE TRIGGER dp_creo_historial AFTER UPDATE ON CUENTAS
+FOR EACH ROW
+	INSERT INTO HISTORIAL_CUENTAS VALUES
+	(OLD.n_cuenta,NOW(),OLD.saldo,NEW.saldo);
+
+UPDATE CUENTAS
+SET saldo=-231 WHERE n_cuenta='kakaroto';
+UPDATE CUENTAS
+SET saldo=521 WHERE n_cuenta='kakaroto';
+
+
+DROP TRIGGER IF EXISTS dp_valor_saldo;
+DELIMITER //
+CREATE TRIGGER dp_valor_saldo BEFORE UPDATE ON CUENTAS
+FOR EACH ROW
+BEGIN	
+	IF NEW.saldo < 0 THEN
+	    SET NEW.saldo = 0;
+	ELSEIF NEW.saldo > 10000 THEN
+	    SET NEW.saldo = 10000;
+	END IF;
+END //
+DELIMITER ;
+
+UPDATE CUENTAS
+SET saldo=-1 WHERE n_cuenta='kakaroto';
+UPDATE CUENTAS
+SET saldo=10001 WHERE n_cuenta='kikiriki';
+
+INSERT INTO CUENTAS VALUES
+('Paco Sanz',6969.69);
+UPDATE CUENTAS
+SET saldo=666 WHERE n_cuenta='Paco Sanz';

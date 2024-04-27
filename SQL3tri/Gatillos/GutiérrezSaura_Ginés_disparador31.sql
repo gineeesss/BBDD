@@ -1,0 +1,10 @@
+DROP TRIGGER IF EXISTS dp_creo_historial;
+CREATE TRIGGER dp_creo_historial AFTER UPDATE ON CUENTAS
+FOR EACH ROW
+	INSERT INTO HISTORIAL_CUENTAS VALUES
+	(OLD.n_cuenta,NOW(),OLD.saldo,NEW.saldo);
+
+UPDATE CUENTAS
+SET saldo=-231 WHERE n_cuenta='kakaroto';
+UPDATE CUENTAS
+SET saldo=521 WHERE n_cuenta='kakaroto';
