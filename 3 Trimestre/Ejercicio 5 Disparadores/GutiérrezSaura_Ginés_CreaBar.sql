@@ -1,0 +1,28 @@
+DROP DATABASE IF EXISTS BAR;
+CREATE DATABASE BAR;
+USE BAR;
+CREATE TABLE CERVEZAS(
+	nombre VARCHAR(25) PRIMARY KEY,
+	fabricante VARCHAR(30)
+);
+CREATE TABLE PRECIOS(
+	bar VARCHAR(20),
+	cerveza VARCHAR(25),
+	precio DECIMAL(4,2),
+	PRIMARY KEY(bar, cerveza)
+);
+
+INSERT INTO CERVEZAS VALUES
+('miau', 'Mewtwo'),
+('grrrrrgrr', 'ReyPalomo');
+
+
+
+
+
+
+
+
+
+
+
