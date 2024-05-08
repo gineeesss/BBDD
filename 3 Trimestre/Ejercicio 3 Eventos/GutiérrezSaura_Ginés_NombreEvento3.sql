@@ -4,11 +4,14 @@ de la tabla SOCIO_BAJA, los socios que se dieron de baja hace más de
 cuatro años.
 El evento comenzará el 1-06-2024 y terminará el 31-08-2024
 
+SET GLOBAL event_scheduler = ON;
+SHOW VARIABLES LIKE 'event_scheduler';
+
 DELIMITER //
-DROP EVENT IF EXISTS SOCIO_BAJA;
-CREATE EVENT SOCIO_BAJA
-ON SCHEDULE EVERY DAY
-STARTS '2024-06-01 00:00:05'
+DROP EVENT IF EXISTS even_asociacion;
+CREATE EVENT even_asociacion
+ON SCHEDULE EVERY 1 DAY
+STARTS '2024-06-01 00:00:01'
 ENDS '2024-08-31 00:00:00'
 DO
 BEGIN
@@ -17,5 +20,3 @@ BEGIN
 END//
 DELIMITER ;
 
-SET GLOBAL event_scheduler = ON;
-SHOW VARIABLES LIKE 'event_scheduler';
