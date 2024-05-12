@@ -1,4 +1,5 @@
 -- even_banco
+SET GLOBAL event_scheduler = ON;
 
 CREATE DATABASE BANCO;
 USE BANCO;
