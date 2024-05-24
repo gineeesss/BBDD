@@ -6,46 +6,34 @@ CREATE TABLE EMPLE_DPTOS(
 	FOREIGN KEY(n_dpto) REFERENCES DEPARTAMENTOS(Numero) 
 );
 
-DROP PROCEDURE IF EXISTS pa_empleados_dptos;
 DELIMITER //
 CREATE PROCEDURE pa_empleados_dptos (IN numMinimo INT)
-BEGIN
-    DECLARE dep INT;
-    DECLARE empleados INT;
-    DECLARE centroNombre VARCHAR (25);
-    DECLARE directorNombre VARCHAR(25);
+    DECLARE dep,empleados INT;
+    DECLARE centroNombre, directorNombre VARCHAR(25);
     DECLARE Terminado INTEGER DEFAULT 0;
-    
-
+    DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET Terminado = 1;
     DECLARE cursorConsulta CURSOR FOR
         SELECT d.Numero, c.Nombre, e.Nombre, COUNT(e.Cod)
         FROM DEPARTAMENTOS d 
         INNER JOIN EMPLEADOS e ON d.Numero = e.Departamento
         INNER JOIN CENTROS c ON d.Centro = c.Numero
         GROUP BY d.Numero;
-   
-    DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET Terminado = 1;
-    DECLARE EXIT HANDLER FOR NOT FOUND ROLLBACK;
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+    DECLARE EXIT HANDLER FOR NOT FOUND rollback;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION rollback;
     
-    
-    --START TRANSACTION;
     OPEN cursorConsulta;
+    START TRANSACTION;
     
-    FETCH cursorConsulta INTO dep,centroNombre,directorNombre,empleados;
-    
+    FETCH cursorConsulta INTO dep,centroNombre,directorNombre,empleados
     WHILE NOT Terminado DO
-    SELECT dep,centroNombre,directorNombre,empleados;
-        IF empleados > numMinimo THEN
-            INSERT INTO EMPLE_DPTOS VALUES(dep,empleados);
+        IF empleados < numMinimo
+            INSERT INTO EMPLE_DPTOS VALUES
+            (dep,empleados);
         END IF;
         
-        FETCH cursorConsulta INTO dep,centroNombre,directorNombre,empleados;
+        FETCH cursorConsulta INTO dep,centroNombre,directorNombre,empleados
     END WHILE;
-    --COMMIT;
-    SELECT CONCAT('Estos son los departamentos que tienen menos de ', numMinimo, 'empleados');
-    SELECT * FROM EMPLE_DPTOS;
-    CLOSE cursorConsulta;
+COMMIT;
 END //
 DELIMITER ;
 
@@ -61,12 +49,9 @@ INNER JOIN CENTROS c ON d.Centro = c.Numero
 GROUP BY d.Numero;
 
 -- Al final el procedimiento se visualiza la tabla EMPLE_DPTOS
-SELECT CONCAT('Estos son los departamentos que tienen menos de ', numMinimo, ' empleados');
+SELECT CONCAT('Estos son los departamentos que tienen menos de ', numMinimo, 'empleados');
 SELECT * FROM EMPLE_DPTOS;
 
--- Llamada al cursor
-CALL pa_empleados_dptos(3);
-SELECT * FROM EMPLE_DPTOS;
 Crear una nueva tabla en la base de datos EMPRESA:
 EMPLE_DPTOS
 - n_dpto entero
